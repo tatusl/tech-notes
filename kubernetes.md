@@ -13,9 +13,18 @@
   * More privileged PSP for kube-system pods. Check TGIK 078 or Kube docs example for this.
   * Restricted for "normal" workloads
   * Something in between, if needed
-* You can use `kubectl describe pod` to check which PSP the pod is using from its annotations  
+* You can use `kubectl describe/get $OBJECT` to check which PSP the pod is using from its annotations
+* In order to create a default and restrictive policy which always resolves, use ClusterRoleBinding and bind to rule to group `system:authenticated`
+* Security context configures security aspects for the pods
+* You can provide exceptions to PSPs on
+  * workload level
+    * binding the role to specific ServiceAccount
+  * namespace level
+* Helper and auditing tool: https://github.com/sysdiglabs/kube-psp-advisor
+  * Advices the set of PSP against your workload
 
 ### References
 
 * Kubernetes docs - https://kubernetes.io/docs/concepts/policy/pod-security-policy/
 * TGI Kubernetes 078: Pod Security Policies - youtube.com/watch?v=zErhwjPRKn8
+* Configure a Security Context for a Pod or Container - https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
