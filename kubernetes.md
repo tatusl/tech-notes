@@ -13,6 +13,7 @@
   * More privileged PSP for kube-system pods. Check TGIK 078 or Kube docs example for this.
   * Restricted for "normal" workloads
   * Something in between, if needed
+* You can use `kubectl describe pod` to check which PSP the pod is using from its annotations  
 
 ### References
 
