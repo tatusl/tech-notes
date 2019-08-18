@@ -1,6 +1,6 @@
-# Kubernetes
+# Pod Security Policies
 
-## Pod Security Policies
+Mostly notes from watching TGI Kubernetes 078: Pod Security Policies
 
 * Pod Security Policies (PSP) are mechanism to prevent security aspects and capabilities of containers.
 * It is implemented by as an optional, but recommended, admission controller
@@ -23,7 +23,7 @@
 * Helper and auditing tool: https://github.com/sysdiglabs/kube-psp-advisor
   * Advices the set of PSP against your workload
 
-### References
+## References
 
 * Kubernetes docs - https://kubernetes.io/docs/concepts/policy/pod-security-policy/
 * TGI Kubernetes 078: Pod Security Policies - youtube.com/watch?v=zErhwjPRKn8
