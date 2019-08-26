@@ -26,5 +26,5 @@ Mostly notes from watching TGI Kubernetes 078: Pod Security Policies
 ## References
 
 * Kubernetes docs - https://kubernetes.io/docs/concepts/policy/pod-security-policy/
-* TGI Kubernetes 078: Pod Security Policies - youtube.com/watch?v=zErhwjPRKn8
+* TGI Kubernetes 078: Pod Security Policies -https://youtube.com/watch?v=zErhwjPRKn8
 * Configure a Security Context for a Pod or Container - https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
