@@ -8,6 +8,10 @@ Check master component statuses:
 
 `kubectl get componentstatus`
 
+Check available api-resources in the cluster:
+
+`kubectl api-resources`
+
 ## Cluster bootstrap and creation
 
 ### Custom cluster (manual install)
