@@ -34,3 +34,11 @@ Check available api-resources in the cluster:
     * stacked topology - each control plane node creates its own local etcd and only communicated with it
     * external topology - etcd is external to the Kubernetes cluster
   * etcd uses Raft consensus algorithm which requires majority. In order to have majority, there needs to be odd number of etcd instances
+  
+## Backing up a cluster
+
+* Mostly it comes down to backing up the etcd
+* Grab and install the etcd-client (https://github.com/etcd-io/etcd/releases)
+* Create snapshot with: `ETCDCTL_API=3 etcdctl snapshot save snapshot.db --cacert /etc/kubernetes/pki/etcd/server.crt --cert /etc/kubernetes/pki/etcd/ca.cert --key /etc/kubernetes/pki/etcd/ca.key`
+* Also backup certificate and keys from `/etc/kubernetes/pki/etcd/`, they are needed in restore
+* Recovery examples https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md
