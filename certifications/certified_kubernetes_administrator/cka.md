@@ -42,3 +42,53 @@ Check available api-resources in the cluster:
 * Create snapshot with: `ETCDCTL_API=3 etcdctl snapshot save snapshot.db --cacert /etc/kubernetes/pki/etcd/server.crt --cert /etc/kubernetes/pki/etcd/ca.cert --key /etc/kubernetes/pki/etcd/ca.key`
 * Also backup certificate and keys from `/etc/kubernetes/pki/etcd/`, they are needed in restore
 * Recovery examples https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md
+
+## Pod and node networking
+
+### Pod and node networking
+
+* Linux networking namespaces are used for pod to network connectivity.
+* Pod has a ip address and virtual network interface pair. Another one is given to the pod (eth0) and another one is on node.
+* Pause container is used to hold a network namespace for a pod
+* Pod to pod node communication within node is done with Linux ethernet bridge. Bridge initiates communication with ARP request
+
+### Node to node - CNI
+* Pod to pod communication between different nodes is done with a Container Network Interface (CNI)
+  * simplified, the source ip address is switched from pods ip to nodes ip. Otherwise, the router would drop the packet
+  * this could be also done with Layer 3 routing, but it would be complicated to manage
+* CNI is a network overlay, creating tunnel between nodes. This is done by encapsulating packets
+* CNI is not built-in to Kubernetes, but can be installed as add-on
+* Following are popular CNI plugins
+  * calicoho
+  * flannel
+  * WeaveNet
+  * Romana
+* Kubelet needs to know that CNI plugin will be used
+  * In `kubeadm` this done with `--pod-network-cidr` parameter
+  
+ ### Networking from internet
+  
+ #### Services
+* Service provides one virtual interface, distributing traffic to pods
+* kube-proxy controls `iptables` for traffic routing
+* Endpoint object is created with service and it keeps cache of pod ip addresses belonging to that service
+* Different service types
+  * ClusterIP
+  * NodePort
+  * LoadBalancer (extension to NodePort)
+* LoadBalancer can be set to favor pod on a node with `externalTrafficPolicy=Local` annotation. Otherwise the request could be routed to a pod on a another node, which creates latency
+
+### Ingress
+* Ingress is like a LoadBalancer, but it can expose multiple services.
+* It exposes http/https routes outside of the cluster to the pods inside
+* It also provides Layer 7 routing, based on hostname or path etc.
+
+### DNS
+* From version 1.13, coredns is the default DNS service for the Kubernetes
+  * service name is still `kube-dns` for backward compatibility
+* Pods and services are assigned DNS names
+* Headless service is a service without a cluster ip (`clusterIP: None`). It will respond with set of ips, instead of one
+* Pods DNS config can be managed with `dnsPolicy` and `dnsConfig`, otherwise the pod will inherit nodes DNS config
+
+  * each ip will point to individual pod of the service
+
