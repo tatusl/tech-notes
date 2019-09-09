@@ -89,6 +89,4 @@ Check available api-resources in the cluster:
 * Pods and services are assigned DNS names
 * Headless service is a service without a cluster ip (`clusterIP: None`). It will respond with set of ips, instead of one
 * Pods DNS config can be managed with `dnsPolicy` and `dnsConfig`, otherwise the pod will inherit nodes DNS config
-
   * each ip will point to individual pod of the service
-
