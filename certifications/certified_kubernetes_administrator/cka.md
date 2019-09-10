@@ -90,3 +90,21 @@ Check available api-resources in the cluster:
 * Headless service is a service without a cluster ip (`clusterIP: None`). It will respond with set of ips, instead of one
 * Pods DNS config can be managed with `dnsPolicy` and `dnsConfig`, otherwise the pod will inherit nodes DNS config
   * each ip will point to individual pod of the service
+
+### Scheduling
+
+* Scheduling decisions can be modified with your own scheduling rules
+* Scheduler goes through the list of checks when scheduling a pod to a node
+* Affinity rules configure for example if the user wants that certain pod goes to a node with certain label
+* By default, scheduler tries to spread the pods that belong to same replica set to different nodes
+* Multiple schedulers can be run at the same time
+  * Pod select their scheduler with annotation
+* Taints allow nodes to repel certain pods
+* Tolerations are set to pod to allow scheduling to a node with matching taint
+* Resource requests (for example CPU and memory) specify the amount of resources a container is quaranteed to get
+* Resource limits make sure that a container does not go above certain value
+* Limit can never be lower than request
+* DaemonSets does not use the scheduler and they run one pod per node
+* Scheduling events can be checked (namespace scoped) with a command: `kubectl get events``
+* Scheduler logs can be checked like any other logs
+
