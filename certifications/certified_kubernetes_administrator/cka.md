@@ -91,7 +91,7 @@ Check available api-resources in the cluster:
 * Pods DNS config can be managed with `dnsPolicy` and `dnsConfig`, otherwise the pod will inherit nodes DNS config
   * each ip will point to individual pod of the service
 
-### Scheduling
+## Scheduling
 
 * Scheduling decisions can be modified with your own scheduling rules
 * Scheduler goes through the list of checks when scheduling a pod to a node
@@ -107,4 +107,3 @@ Check available api-resources in the cluster:
 * DaemonSets does not use the scheduler and they run one pod per node
 * Scheduling events can be checked (namespace scoped) with a command: `kubectl get events``
 * Scheduler logs can be checked like any other logs
-
