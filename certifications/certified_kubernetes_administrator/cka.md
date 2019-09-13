@@ -107,3 +107,7 @@ Check available api-resources in the cluster:
 * DaemonSets does not use the scheduler and they run one pod per node
 * Scheduling events can be checked (namespace scoped) with a command: `kubectl get events``
 * Scheduler logs can be checked like any other logs
+
+## Application lifecycle management
+
+* **Ad here the kubectl deployment, rollback, status, undo etc commands**
