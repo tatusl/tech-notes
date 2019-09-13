@@ -110,6 +110,8 @@ Check available api-resources in the cluster:
 
 ## Application lifecycle management
 
+### kubectl commands
+
 Kubectl commands for manipulating application lifecycle
 
 * Create a deployment (with a record for rollbacks)
@@ -129,3 +131,15 @@ Kubectl commands for manipulating application lifecycle
 `kubectl rollout pause deployment $DEPLOYMENT`
 * Resume the paused rollout
 `kubectl rollout resume deployment $DEPLOYMENT`
+
+### Readiness probe
+
+* Readiness probe states when the pod is able to respond to requests
+
+### Passing configuration options
+
+* Environment variables
+* ConfigMaps and Secrets (for sensitive data)
+   * Can be passed via environment varialbes
+   * Or mounted as olume
+
