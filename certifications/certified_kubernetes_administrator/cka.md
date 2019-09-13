@@ -110,4 +110,22 @@ Check available api-resources in the cluster:
 
 ## Application lifecycle management
 
-* **Ad here the kubectl deployment, rollback, status, undo etc commands**
+Kubectl commands for manipulating application lifecycle
+
+* Create a deployment (with a record for rollbacks)
+`kubectl create -f deployment.yaml --record`
+* Check status of deployment (rollout)
+`kubectl rollout status deployments $DEPLOYMENT`
+* Deployment creates the underlying replica set
+* Scale deployment
+`kubectl scale deployment $DEPLOYMENT --replicas=5`
+* Expose the deployment, this is same as creating a service
+`kubectl expose deployment $DEPLOYMENT --port $PORT --target-port $TARGET_PORT --type $SERVICE_TYPE`
+* Perform rolling update by setting a different Docker image
+`kubectl set image deployments/$DEPLOYMENT app=$REPO/$IMAGE:tag`
+* Undo rollout and rollback
+`kubectl rollout undo deployments $DEPLOYMENT`
+* Pause an ongoing rollout
+`kubectl rollout pause deployment $DEPLOYMENT`
+* Resume the paused rollout
+`kubectl rollout resume deployment $DEPLOYMENT`
