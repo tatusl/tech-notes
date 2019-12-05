@@ -1,6 +1,6 @@
 # StatefulSet
 
-## Resizing EBS disks of StatefulSet without minor downtime
+## Resizing EBS disks of StatefulSet without major downtime
 
 Kubernetes has supported resizing of volumes without recreating PVCs and PVs from version 1.11 with certain disk types. EBS is one of them. However, if VolumeClaimTemplate is used certain tricks needs to be done.
 
