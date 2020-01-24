@@ -141,5 +141,36 @@ Kubectl commands for manipulating application lifecycle
 * Environment variables
 * ConfigMaps and Secrets (for sensitive data)
    * Can be passed via environment varialbes
-   * Or mounted as olume
+   * Or mounted as volume
+   
+## Data management in the cluster
+* Data can be persisted using volumes, for example by provisioning disk from the cloud infrastructure and attaching that to the pod
 
+### Persistent Volumes (PV)
+* Persistent Volume resousrce provides higher level abstraction
+* PV access modes
+  * defines if the volume can be written and read by multiple nodes or just single node
+  * RWO (ReadWriteOnce) - only one pod can mount the volume for writing and reading
+  * ROX (ReadOnlyMany) - multiple nodes can mount the volume for reading
+  * RWX (ReadWriteMany) - multiple nodes can mount the volume for reading and writing
+  * Only one mode can be used at the same time
+  * Mount capability is for node, not the pod
+* `persistenVolumeReclaimPolicy` defines what happens to the PV if the claim is released.
+  * Retain - keeps the PV
+  * Recycle - Volume can be reused by another PVC
+  * Delete - PV will be deleted
+* Volumes that are already in use by a pod are protected against data loss.
+  * Even if PVC is deleted, volume can be accessed by the pod - Storage object in use Protection
+  
+### Persistent Volume Claims (PVC)
+* When referencing to a PV from a pod, PVC needs to be used
+* Abstracts away the storage layer details from the developer
+* `storage` attribute can't be higher than in PV resource
+* PVC defines the used access mode
+* PVCs are namespace specific
+
+### Storage class
+
+* Storage class provides an easy way to create PVCs without defining PV
+* Major cloud provide their block disk services as storage classes
+* Also hostPath can be used to provision worker node disk.
