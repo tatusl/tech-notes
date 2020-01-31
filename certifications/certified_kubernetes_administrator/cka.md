@@ -174,3 +174,78 @@ Kubectl commands for manipulating application lifecycle
 * Storage class provides an easy way to create PVCs without defining PV
 * Major cloud provide their block disk services as storage classes
 * Also hostPath can be used to provision worker node disk.
+
+## Security
+
+### Apiserver authentication
+
+* Evaluation is done whether the request is coming from service account or "normal user"
+  * Kubernetes do not have User object, but users can authenticate themselves with
+    * private key
+    * user store
+    * file with a list of user names and passwords
+* ServiceAccounts (SA) are for "machine access", if the software needs access to Kubernetes API
+  * token (specified as Kubernetes secret) is used for authentication
+  * SA can be added to pod by specifying it in the manifest.
+  * Default service account is used if SA is not specified
+* `kubectl config view` lists address of the cluster in use and authentication mechanism
+* It is a good idea to add separate SA for separate pods or replicated pods
+
+### Authorization (RBAC)
+
+* Authentication = who can access
+* Authorization = what given entity can do
+* In Kubernetes authorization is done by RBAC
+* Roles and ClusterRoles
+  * what can be done for which resource
+* RoleBindings and ClustrerRoleBindings
+  * who can do it
+* Role and RoleBinding is namespace level
+* ClusterRole and ClusterRoleBinding is cluster-level
+* Bindings can be done against user, service-accounts or groups
+
+### Network policies
+
+* Govern how pod communicate with each other
+* Ingress and egress rules
+* CNI needs to support Network polices. For example
+  * Canal
+  * Calico
+* PodSelectors and NamespaceSelectors can be used to select desired pods for which the policies apply
+
+### TLS certificates
+
+* CA is used to generate certificates
+* Certificates are used to authenticate to apiserver
+* To create new certificates, first a CSR (certificate signing request) needs to be generated using chosen tool
+  * like `cfssl` and `cfssljson`
+* After that, `CertificateSigningRequest` object needs to be create to Kubernetes API
+* CSR needs to be approved: `kubectl certificate approve $CSR_NAME`
+
+### Secure images
+
+* Images come from container registry, by default Docker Hub
+* ImagePullPolicy should be `Always` as other users have access to local Docker images even if they don't have ImagePullSecrets
+* ImagePullSecrets can be used to define credentials to private Docker registries
+
+### Security Contexts
+
+* Can be used to limit pod or container access to certain objects.
+* For example limit container running as root: `runAsUser: $UID` or `runAsNonRoot: true`
+* If container needs kernel capabilities of a need, it can be run in privileged mode: `privileged: true`
+* Kernel features can be lock-down from a pod by setting capabilities in manifest:
+```
+capabilities:
+  add:
+    - SYS_TIME
+```
+* Capabilities can dropped with `drop` keyword
+* Container filesystem can be set to read-only with `readOnlyRootFilesystem`
+* If security context is specified in pod level, all containers of the pod inherit it
+* However, it can be also specified for certain container
+
+### Secrets
+
+* Can be passed to a pod or container as environment variables or as a file via volumes
+* Applications can dump their environment variables for example in crash reports, so passing them as volumes are preferred
+* Secrets shared as volumes used `tmpfs`, so they are written to memory, not to disk
