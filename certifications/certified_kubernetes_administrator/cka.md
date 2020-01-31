@@ -249,3 +249,13 @@ capabilities:
 * Can be passed to a pod or container as environment variables or as a file via volumes
 * Applications can dump their environment variables for example in crash reports, so passing them as volumes are preferred
 * Secrets shared as volumes used `tmpfs`, so they are written to memory, not to disk
+
+## Logging and monitoring
+
+* metrics-server expose metric data via Metrics API on node and pod level
+* `kubectl top node`
+* `kubectl top pod`
+* Liveness and readiness probes check if the pod is running properly and if container is ready to receive client requests
+* Container logs are in `/var/log/containers` directory
+* Kubelet logs are in `/var/log`
+* If container writes to STDOUT/STDERR, logs can be checked with `kubectl logs $POD_NAME -c $CONTAINER_NAME`
