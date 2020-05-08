@@ -1,4 +1,4 @@
-# Kubernetes multi-tenancy research
+# Multi-tenancy
 
 ## Why?
 
