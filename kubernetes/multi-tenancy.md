@@ -113,3 +113,5 @@
 * A Pathway to Multi-Tenancy in Kubernetes - https://www.youtube.com/watch?v=Qljlvf4BlZ4
 * Kubernetes Multi-Tenancy Best Practices - https://platform9.com/blog/kubernetes-multi-tenancy-best-practices/
 * Cluster multi-tenancy - https://cloud.google.com/kubernetes-engine/docs/concepts/multitenancy-overview
+* Multi-tenant design considerations for Amazon EKS clusters - https://aws.amazon.com/blogs/containers/multi-tenant-design-considerations-for-amazon-eks-clusters/
+* AWS re:Invent 2019: Architecting multi-tenant PaaS offerings with Amazon EKS (GPSTEC337) - https://www.youtube.com/watch?v=P29eL_51iYU
