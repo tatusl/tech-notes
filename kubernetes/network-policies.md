@@ -1,6 +1,7 @@
 # Network Policies
 
 > A network policy is a specification of how groups of pods are allowed to communicate with each other and other network endpoints.
+
 https://kubernetes.io/docs/concepts/services-networking/network-policies/
 
 ## Resource
