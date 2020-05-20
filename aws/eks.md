@@ -17,3 +17,7 @@ echo | openssl s_client -servername oidc.eks.${REGION}.amazonaws.com -showcerts 
 * `kubergrunt` tool (https://github.com/gruntwork-io/kubergrunt):
 
 `kubergrunt eks oidc-thumbprint --issuer-url $ISSUER_URL`
+
+## Resources
+
+Amazon EKS Best Practices Guide for Security - https://aws.github.io/aws-eks-best-practices/
