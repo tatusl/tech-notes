@@ -34,6 +34,11 @@
 * For example, check in CI that `latest` that tag is not used
 * See https://blog.madhuakula.com/dockerfile-security-checks-using-opa-rego-policies-with-conftest-32ab2316172f for more information
 
+## Use conftest to validate Terraform code
+
+* Conftest and OPA can be used to validate Terraform and create assertions
+* See https://marcyoung.us/post/atlantis-opa
+
 ## Resources
 * TGI Kubernetes 119: Gatekeeper and OPA - https://www.youtube.com/watch?v=ZJgaGJm9NJE&
 * https://www.openpolicyagent.org/
