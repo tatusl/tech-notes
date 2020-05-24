@@ -28,6 +28,12 @@
 * Can be run in CI for getting feedback before applying manifests to cluster
 * For example can be used to check Kubernetes API deprecations (https://github.com/swade1987/deprek8ion)
 
+## Use Conftest and OPA for Dockerfile checks
+
+* Conftest and OPA can be used to write for example security checks for Dockerfiles
+* For example, check in CI that `latest` that tag is not used
+* See https://blog.madhuakula.com/dockerfile-security-checks-using-opa-rego-policies-with-conftest-32ab2316172f for more information
+
 ## Resources
 * TGI Kubernetes 119: Gatekeeper and OPA - https://www.youtube.com/watch?v=ZJgaGJm9NJE&
 * https://www.openpolicyagent.org/
