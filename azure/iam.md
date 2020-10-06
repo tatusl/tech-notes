@@ -8,6 +8,18 @@
 * there can be multiple subscriptions under single Azure AD tenant
 * Azure AD Connect can synchronize users between on-premise AD and Azure AD 
 
+### Managed Identities
+
+* Internally, managed identities are service principals of a special type, locked to only be used with Azure resources
+    * when the managed identity is deleted, the corresponding service principal is removed.
+* Azure takes care of rolling the credentials used by Managed identity, so there is no need for manual credential rotation
+* There are two types of managed identities
+    * system-assigned managed identity
+        * enabled directly on an Azure service instance. Tied to a lifecycle of that service.
+    * user-assigned managed identity
+        * created as a standalone Azure resource. This identity can be assigned to one or more Azure service instances.
+        * has lifecycle of its own
+
 ## RBAC
 
 Allows to authorize to user specific actions to specific Azure resources
