@@ -7,7 +7,7 @@ CDN endpoint rules engine can be used to redirect HTTP request to HTTPS port.
 In Terraform, this can be achieved with the following `delivery_rule` block
 for `azure_endpoint_resource`:
 
-```
+```hcl
 delivery_rule {
     name  = "EnforceHTTPS"
     order = "1"
@@ -21,11 +21,10 @@ delivery_rule {
       redirect_type = "Found"
       protocol      = "Https"
     }
-  }
+}
 ```
 
 Azure docs shows how to do this from Portal https://docs.microsoft.com/en-us/azure/cdn/cdn-standard-rules-engine#redirect-users-to-https
-
 
 ## Resources
 
