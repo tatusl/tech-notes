@@ -6,6 +6,7 @@
 
 ### Namespaces
 
+* "What you can see"
 * isolation mechanism for processes
 * changes to resources within namespace can be invisible outside the namespace
 * examples of available namespaces
@@ -39,6 +40,7 @@
 
 ### Control groups
 
+* "What you can use"
 * Cgroups
 * Organizes all processes in the system, whether they are in container or not
 * Account for resource usage and gather utilization data
@@ -92,3 +94,4 @@
 * Linux Container Primitives: cgroups, namespaces, and more! - https://www.youtube.com/watch?v=x1npPrzyKfs
 * CGroups documentation - https://www.kernel.org/doc/Documentation/cgroup-v1/
 * Overlay filesystem documentation - https://www.kernel.org/doc/Documentation/filesystems/overlayfs.txt
+* Golang UK Conf. 2016 - Liz Rice - What is a container, really? Let's write one in Go from scratch - https://www.youtube.com/watch?v=HPuvDm8IC-4
