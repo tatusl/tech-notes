@@ -37,9 +37,18 @@
   * mount secrets/keys/certs to pod using a CSI volume
   * still in experimental state
 
+## Decode secrets
+
+Decodes all values of certain secret.
+
+```bash
+kubectl get secret <secret_name> -o go-template='{{range $k,$v := .data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{"\n"}}{{end}}'
+```
+
 ## Resources
 
 * TGI Kubernetes 113: Kubernetes Secrets Take 3 - https://www.youtube.com/watch?v=an9D2FyFwR0
 * https://github.com/bitnami-labs/sealed-secrets 
 * https://github.com/kubernetes-sigs/secrets-store-csi-driver
 * https://www.hashicorp.com/blog/injecting-vault-secrets-into-kubernetes-pods-via-a-sidecar/
+* How To Decode / Decrypt Kubernetes Secret - https://computingforgeeks.com/how-to-decrypt-kubernetes-secret/
