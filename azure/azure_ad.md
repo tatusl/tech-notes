@@ -45,7 +45,9 @@ resource "azuread_user" "users" {
 }
 ```
 
-Here is a command to fetch users and their initial passwords from Terraform state:
+### Fetch initial credentials from Terraform state
+
+Here is a command to fetch users and their initial passwords from Terraform state with jq:
 
 `terraform show -json | jq ' .values.root_module.resources | map(select( .address |contains("azuread_user") )) | map({user_principal_name: .values.user_principal_name, password: .values.password})'
 `
