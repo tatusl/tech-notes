@@ -159,3 +159,147 @@
 * Generally security groups are used to allow traffic, NACLs to deny
 * Can't reference logical resources and can't be assigned to logical resources
 * One NACL can be associated with many subnets
+=======
+
+## VPC
+
+### Security Groups
+
+* No explicit deny
+* Allow referencing logical resources, like other security Groups
+  * self-referencing can be done
+* Attached to ENI (Elastic Network Interface)
+
+### BGP (Border Gateway Protocol)
+
+* AS - Autonomous System - routers controller by one entity, network in BGP
+* ASN Range is 0-65535, controlled by IANA
+  * private range is 64512-65534
+* Operates over tcp port  137
+* Peering between ASs is manually configured
+* Path-vector protocol is exchanges the best path to destination between peers - ASPATH
+* iBGP - internal BGP - routing within an AS
+* eBGP - external BGP - routing between ASs
+* in path table, i is the origin
+* By default, BGP does not take link speed to account, only the path length
+  * this can overridden with AS Path Prepending
+  * this is done by adding artificial ASs to AS Path
+
+### AWS Global Accelerator
+
+* Anycast IPs allow ip address to be in multiple location at the same time
+  * Routing moves traffic to the closest location
+* Global Accelerator Edge Location has pair of anycast IPs
+  * traffic can be the routed to the closest location
+* When traffic is directed to Global Accelerator ip addresses, rest of the transit is using AWS links and networks
+* Works with TCP/UDP - difference from CloudFront
+* Does not cache anything
+
+### Site-to-site VPN
+
+* Logical connection between a VPC and on-prem network
+  * encrypted using IPSec
+  * Runs over public internet
+* HA - when correctly architected and implemented
+* Quick to provision
+* Virtual Private Gateway (VGW) is associated to VPC and can be target in route tables
+  * has endpoints in each AZ
+* Customer Gateway (CGW) logical device to act as VPN connection endpoint 
+* VPN connection - linked to one VGW and one CGW
+* Static VPC means that VPN connection is statically configured with ip ranges for both sides
+* Customer on-prem router is single-point-of-failure - partial high-availability
+* There can be two on-prem customer gateways, so the whole architecture is HA
+* Dynamic VPN uses Border Gateway Protocol (BGP)
+  * Routers exchange routing information
+  * can communicate status of links between customer gateways and AWS side
+  * if route propagation is enabled, routes are automatically added
+* AWS VPN speed limitation is 1,25Gbps and there is encryption overhead
+* Latency can be inconsistent, because traffic is routed over public internet
+* Cost - AWS hourly cost, GB out cost, data cap (on-premises)
+* Can be used as backup for Direct Connect
+* Can be used with Direct Connect
+
+### Transit Gateway
+
+* Network transit hub, connecting VPCs to an on-premises network using Direct Connect or Site-to-Site VPN connections
+* Network Gateway object - HA and scalable
+* Other AWS network resources uses attachments to connect to Transit Gateway 
+  * VPC
+  * Site-to-site VPN
+  * Direct Connect Gateway
+* Is capable of transitive routing
+* Can be peered with another TGWs - cross-account or cross-region
+* TGWs can be shared to other accounts using Resource Access Manager (RAM)
+* One DX gateway can be connected to three TGWs
+* By default, Transit Gateway has one default route table, which has routes to attached network resources
+  * all attachments use this route table for routing decisions
+  * all attachments propagate routes to it
+  * the two above-mentioned combined means all attachments can route to all attachments
+* Routes are not propagated over peering attachments (two peered TGWs) - static routes need to be used
+* Use unique ASNs for future route propagation features
+* Public DNS to private IP resolution is not supported over peers
+* Up to 50 peering attachments per TGW
+  * different regions and accounts 
+* Data is encrypted
+* Attachments can be only associated with one route table
+* Route tables can be associated with many attachments
+* Attachments can propagate to multiple route tables - even those they are not associated with
+* Route table association is used when data is exiting an attachment 
+* Route table propagation controls which route tables are populated by routes known by the attachment
+* The above-mentioned features can be used to create route isolation
+
+### Advanced VPC Routing
+
+* IPv4 and IPv6 are handed separately within a route table 
+* Route table default limit is 50 static routes and 100 dynamic (propagated) routes
+* Main route table is implicitly attached to all subnets
+* When custom route table is associated to subnet, main route table association is removed
+  * However, if custom route table association is removed, main route table applies again 
+* It's not possible to have subnet without route table association
+* Propagated route tables can be enabled per route table
+* More specific route always gets prioritized (for example /28 is selected over /32)
+* If prefix length is equal for same route, static route is selected over propagated one
+* For the same routes with same prefix lenght learned dynamically, the precedence order is the following:
+  * Direct Connect
+  * VPN Static
+  * VPN BGP
+  * AS_PATH (Path between two ASNs, distance between systems)
+* Ingress routing
+  * Gateway route tables can be used to control actions on inbound traffic for gateway (for example IGW) 
+    * for example forward it to security appliance
+
+### IPSEC VPNs
+
+* Group of protocols to setup secure tunnels across insecure networks between two peers (local and remote)
+* Only "interesting" traffic is sent over the tunnel
+* Provides authentication and encryption
+* IPSEC has two phases
+  * IKE phase 1 (slow and heavy) - Internet Key Exchange
+    * authentication using pre-shared key or certificate
+    * uses asymmetric encryption to agree on and create a shared symmetric key
+    * end result is IKE SA created (phase 1 tunnel)
+    * Uses Diffie-Hellman for key exchange
+  * IKE phase 2 (Fast & Agile)
+    * uses the keys agreed on phase 1
+    * agree encryption method, and keys for bulk data transfer
+    * end result is IPSEC SA (security association)
+* There are two types of IPSEC VPNs
+  * policy-based
+    * rule sets match traffic per pair of security associations  
+    * allows network to have different security settings for different type of traffic
+  * route-based 
+    * target matching (prefix) matches single pair of security associations 
+* Tunnels have two ends, left and right. Customer and AWS, meaning local and remote.
+  * IPs of these ends are referred as AWS outside IP and customer outside IP
+* Inside the tunnels there are AWS inside IP address and customer inside IP address  
+  * Routing and raw data travels through inside of the tunnel - encrypted traffic runs outside of the tunnel across public internet
+
+# Accelerated Site-to-Site VPN
+
+* By default S2S VPN traffic transit is over public network
+* When S2S VPN is used in accelerated mode, AWS Global Accelerator network is used
+* VPN tunnel IPs are global, and connections are routed to the closest global accelerator edge location
+* Public internet is only used for minimal amount of time to route traffic to nearest edge location
+* Acceleration can be only enabled when creating a TGW VPN attachment, not using VPNs with VGW
+* Fixed accelerator cost and a transfer fee
+* New advanced S2S VPNs features are usually only released for TGW VPN, so the default recommendation is to use it
