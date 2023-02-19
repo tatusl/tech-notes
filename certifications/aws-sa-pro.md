@@ -303,3 +303,44 @@
 * Acceleration can be only enabled when creating a TGW VPN attachment, not using VPNs with VGW
 * Fixed accelerator cost and a transfer fee
 * New advanced S2S VPNs features are usually only released for TGW VPN, so the default recommendation is to use it
+
+# AWS Client VPN
+
+* Managed OpenVPN product
+* Client VPN endpoint is associated to one VPC
+* Also associated with one or more target networks
+* After above-mentioned associations, Client VPN product starts to charge
+* Billing is based on
+  * Number of subnet associations (flat rate)
+  * hourly fee of Client VPN connection
+* One subnet per AZ
+* Defined route table is pushed to clients
+* By default, all traffic is routed through Client VPN
+  * Pushed route table takes precedence over local route tables of clients 
+* Split-tunneling enables clients to route only selected traffic through the VPN  tunnel
+  * not the default mode
+  * needs to be separated manually
+* Auth methods
+  * identity based
+    * AWS Directory Service, for example
+  * certificate based
+* User needs to create certificates and upload them to the AWS ACM
+  * identity-based authentication only needs server certificate
+* Subnet association needs to be done seperately after the Client VPN Endpoint is created
+* Accessed networks need to be configured with authorization rules
+
+# Direct Connect
+
+* Physical connection to AWS region
+  * 1, 10, or 100 Gbps
+* Connection goes from business premises to DX Locatino to AWS Region
+* Orderind Direct Connect is in fact ordering a network port at a DX Location
+* Costs
+  * Port Hourly costs
+  * Outbound data transfer
+* Because the connection is physical, there is no resilience or high-availability
+* Provides low and consistent latency
+* Best way to achieve high speeds for hybrid networking
+* Can be used to access AWS private services (in VPCs) and AWS public services without internet connection
+* Internet connection needs proxy or other networking appliance
+* Cross Connect is a connection between AWS cage and customer/comms partner cage at the DX location
